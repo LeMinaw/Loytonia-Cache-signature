@@ -11,7 +11,7 @@
 var excludedPseudos = ['kocal', 'avooal', 'josh3582', 'm0tdp', 'michel_liu', 'mybenblack', 'haribooh', 'reexylx', 'c.23-lhc', 'iron_bow', 'rajeshu', 'worms92', 'fireoyster', 'fiskirata33'],
     posts = document.querySelectorAll('tr.post');
 
-for(var i = 0, len = posts.length; i < len; i++) {w
+for(var i = 0, len = posts.length; i < len; i++) {
     var post   = posts[i],
         pseudo = post.querySelector('.name a[href^="/u"] span strong').innerText,
         signature = post.querySelector('.signature_div');
