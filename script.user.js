@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name       Loytonia - On cache les signatures
 // @namespace  http://github.com/Kocal
-// @version    0.2
+// @version    0.3
 // @description  On cache les signatures du forum Loytonia, sauf celle de "Kocal"
 // @match      http://forum.loytonia.com/*
 // @match      https://forum.loytonia.com/*
@@ -13,7 +13,7 @@ var excludedPseudos = ['kocal', 'avooal', 'josh3582', 'm0tdp', 'michel_liu', 'my
 
 for(var i = 0, len = posts.length; i < len; i++) {
     var post   = posts[i],
-        pseudo = post.querySelector('.name a[href^="/u"] span strong').innerText,
+        pseudo = post.querySelector('.name').innerText,
         signature = post.querySelector('.signature_div');
 
     if(excludedPseudos.indexOf(pseudo.toLowerCase()) === -1) {
