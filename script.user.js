@@ -28,8 +28,11 @@ function init() {
             hideSignature(post)
         else
             showSignature(post);
-        
-        minibar.prependChild(makeButton((isBanned(pseudo) ? 'to show' : 'to hide')));
+
+        // Pour pas que ça fasse des trucs chelous avec le script "Valou je t'emmerde"
+        if(post.style.display != 'none') {
+            minibar.prependChild(makeButton((isBanned(pseudo) ? 'to show' : 'to hide')));
+        }
     }
 }
 
