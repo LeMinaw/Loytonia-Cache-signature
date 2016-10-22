@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Minecraft.fr - NoSign
 // @namespace   http://github.com/LeMinaw
-// @version     1.0.0
+// @version     1.0.1
 // @description Système de backlisting de signature sur le forum de Minecraft.fr.
 // @match       http://minecraft.fr/forum/*
 // @match       https://minecraft.fr/forum/*
@@ -18,8 +18,6 @@ function init() {
     var posts = document.querySelectorAll('.uix_message');
 
     insertCSS();
-    
-    unsafeWindow.console.log("console ok");
 
     for (var i = 0, len = posts.length; i < len; i++) {
         var post = posts[i],
@@ -34,8 +32,6 @@ function init() {
             showSignature(post);
             minibar.prependChild(makeButton('to hide'));
         }
-       
-        unsafeWindow.console.log(pseudo);
     }
 }
 
@@ -130,8 +126,6 @@ function makeButton(state) {
         a.textContent = 'Montrer la signature';
 
     a.addEventListener('click', updateState, false);
-    
-    unsafeWindow.console.log("new button");
     
     return a;
 }
