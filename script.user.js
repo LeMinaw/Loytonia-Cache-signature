@@ -1,21 +1,21 @@
 // ==UserScript==
-// @name       Loytonia - On cache les signatures
-// @namespace  http://github.com/Kocal
-// @version    0.4
-// @description  Système de backlisting de signature sur le forum http://forum.loytonia.com
-// @match      http://forum.loytonia.com/*
-// @match      https://forum.loytonia.com/*
-// @copyright  2014+, Hugo Alliaume
+// @name        MCFR - NoSign
+// @namespace   http://github.com/LeMinaw
+// @version     0.0.1
+// @description Système de backlisting de signature sur le forum http://minecraft.fr/forum/
+// @match       http://minecraft.fr/forum/*
+// @match       https://minecraft.fr/forum/*
+// @copyright   2016+, LeMinaw
 // ==/UserScript==
 
 'use strict';
 
-Node.prototype.prependChild = function(child) { 
-    this.insertBefore(child, this.firstChild);
-};
+//Node.prototype.prependChild = function(child) { 
+//    this.insertBefore(child, this.firstChild);
+//};
 
 function init() {
-    var posts = document.querySelectorAll('tr[class^="post"].post');
+    var posts = document.querySelectorAll('.uix_message');
 
     insertCSS();
 
@@ -30,18 +30,18 @@ function init() {
             showSignature(post);
 
         // Pour pas que ça fasse des trucs chelous avec le script "Valou je t'emmerde"
-        if(post.style.display != 'none') {
-            minibar.prependChild(makeButton((isBanned(pseudo) ? 'to show' : 'to hide')));
-        }
+        //if(post.style.display != 'none') {
+        //    minibar.prependChild(makeButton((isBanned(pseudo) ? 'to show' : 'to hide')));
+        //}
     }
 }
 
 function getPseudoFromPost(post) {
-    return post.querySelector('.name').textContent.toLowerCase();
+    return post.querySelector('.username').textContent.toLowerCase();
 }
 
 function getPostsFromPseudo(pseudo) {
-    var _posts = document.querySelectorAll('tr[class^="post"].post'),
+    var _posts = document.querySelectorAll('.uix_message'),
         posts = [];
 
     for(var i = 0, len = _posts.length; i < len; i++) {
@@ -53,11 +53,11 @@ function getPostsFromPseudo(pseudo) {
 }
 
 function getMinibarFromPost(post) {
-    return post.nextSibling.querySelector('.post-options');
+    return post.nextSibling.querySelector('.publicControls');
 }
 
 function getSignature(post) {
-    return post.querySelector('.signature_div') || document.querySelector('div');
+    return post.querySelector('.uix_signature') || document.querySelector('div');
 }
 
 function hideSignature(post) {
@@ -81,7 +81,7 @@ function showSignatures(posts) {
 }
 
 function getBannedPseudos() {
-    var pseudos = localStorage.getItem('kocal-bannedPseudos');
+    var pseudos = localStorage.getItem('leminaw-bannedPseudos');
 
     if(!pseudos) {
         pseudos = [];
@@ -93,7 +93,7 @@ function getBannedPseudos() {
 }
 
 function setBannedPseudos(pseudos) {
-    localStorage.setItem('kocal-bannedPseudos', JSON.stringify(pseudos));
+    localStorage.setItem('leminaw-bannedPseudos', JSON.stringify(pseudos));
 }
 
 function isBanned(pseudo) {
@@ -119,7 +119,7 @@ function debanPseudo(pseudo) {
 function makeButton(state) {
     var a = document.createElement('a');
 
-    a.className = 'kocal kocal-' + state.replace(' ', '-');
+    a.className = 'leminaw leminaw-' + state.replace(' ', '-');
     
     a.textContent = 'Cacher la signature';
 
@@ -135,7 +135,7 @@ function insertCSS() {
     var style = document.createElement('style');
 
     style.textContent = "\
-        a.kocal { \
+        a.leminaw { \
             background : #8B8B8B; \
             border : 1px solid #000; \
             color : #fff; \
@@ -143,23 +143,23 @@ function insertCSS() {
             font-size : 0.9em; \
             padding : 0 3px; \
         } \
-        a.kocal:hover { \
+        a.leminaw:hover { \
             text-decoration : none !important; \
         } \
         \
-        a.kocal.kocal-to-hide { \
+        a.leminaw.leminaw-to-hide { \
             background : #E94747; \
         } \
         \
-        a.kocal.kocal-to-hide:hover { \
+        a.leminaw.leminaw-to-hide:hover { \
             background : #EC5E5E; \
         } \
         \
-        a.kocal.kocal-to-show { \
+        a.leminaw.leminaw-to-show { \
             background : #4FB122; \
         } \
         \
-        a.kocal.kocal-to-show:hover { \
+        a.leminaw.leminaw-to-show:hover { \
             background : #5FBB35; \
         } \
     ";
@@ -188,7 +188,7 @@ function updateButtonState(posts, state) {
         var post = posts[i],
             button = post.nextSibling.querySelector('a.kocal');
 
-        button.className = 'kocal kocal-' + state.replace(' ', '-');
+        button.className = 'leminaw leminaw-' + state.replace(' ', '-');
 
         button.textContent = 'Cacher la signature';
 
