@@ -1,8 +1,6 @@
-Loytonia - On cache les signatures
-================================
+# Minecraft.fr - On cache les signatures
 
-Parce que j'en ai ras le cul de ces signatures insupportables.
+Sert à cacher les signatures sur le forum de minecraft.fr.
+Basé sur un userscript de Kocal.
 
-**[Installer l'extension](https://raw.github.com/Kocal/Loytonia-On-cache-les-signatures/master/script.user.js)**
-
-[http://forum.loytonia.com]()
+**[Installer l'extension]**
