@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name        MCFR - NoSign
+// @name        Minecraft.fr - NoSign
 // @namespace   http://github.com/LeMinaw
-// @version     0.0.1
-// @description Système de backlisting de signature sur le forum http://minecraft.fr/forum/
+// @version     1.0.0
+// @description Système de backlisting de signature sur le forum de Minecraft.fr.
 // @match       http://minecraft.fr/forum/*
 // @match       https://minecraft.fr/forum/*
 // @copyright   2016+, LeMinaw
@@ -10,29 +10,32 @@
 
 'use strict';
 
-//Node.prototype.prependChild = function(child) { 
-//    this.insertBefore(child, this.firstChild);
-//};
+Node.prototype.prependChild = function(child) { 
+    this.insertBefore(child, this.firstChild);
+};
 
 function init() {
     var posts = document.querySelectorAll('.uix_message');
 
     insertCSS();
+    
+    unsafeWindow.console.log("console ok");
 
-    for(var i = 0, len = posts.length; i < len; i++) {
+    for (var i = 0, len = posts.length; i < len; i++) {
         var post = posts[i],
             pseudo = getPseudoFromPost(post),
             minibar = getMinibarFromPost(post);
 
-        if(isBanned(pseudo))
-            hideSignature(post)
-        else
+        if(isBanned(pseudo)) {
+            hideSignature(post);
+            minibar.prependChild(makeButton('to show'));
+        }
+        else {
             showSignature(post);
-
-        // Pour pas que ça fasse des trucs chelous avec le script "Valou je t'emmerde"
-        //if(post.style.display != 'none') {
-        //    minibar.prependChild(makeButton((isBanned(pseudo) ? 'to show' : 'to hide')));
-        //}
+            minibar.prependChild(makeButton('to hide'));
+        }
+       
+        unsafeWindow.console.log(pseudo);
     }
 }
 
@@ -53,11 +56,11 @@ function getPostsFromPseudo(pseudo) {
 }
 
 function getMinibarFromPost(post) {
-    return post.nextSibling.querySelector('.publicControls');
+    return post.querySelector('.publicControls');
 }
 
 function getSignature(post) {
-    return post.querySelector('.uix_signature') || document.querySelector('div');
+    return post.querySelector('.signature') || document.querySelector('div');
 }
 
 function hideSignature(post) {
@@ -119,7 +122,7 @@ function debanPseudo(pseudo) {
 function makeButton(state) {
     var a = document.createElement('a');
 
-    a.className = 'leminaw leminaw-' + state.replace(' ', '-');
+    a.className = 'item control leminaw leminaw-' + state.replace(' ', '-');
     
     a.textContent = 'Cacher la signature';
 
@@ -127,7 +130,9 @@ function makeButton(state) {
         a.textContent = 'Montrer la signature';
 
     a.addEventListener('click', updateState, false);
-
+    
+    unsafeWindow.console.log("new button");
+    
     return a;
 }
 
@@ -135,40 +140,22 @@ function insertCSS() {
     var style = document.createElement('style');
 
     style.textContent = "\
-        a.leminaw { \
-            background : #8B8B8B; \
-            border : 1px solid #000; \
-            color : #fff; \
-            cursor : pointer; \
-            font-size : 0.9em; \
-            padding : 0 3px; \
-        } \
-        a.leminaw:hover { \
-            text-decoration : none !important; \
-        } \
-        \
         a.leminaw.leminaw-to-hide { \
             background : #E94747; \
         } \
         \
-        a.leminaw.leminaw-to-hide:hover { \
-            background : #EC5E5E; \
-        } \
         \
         a.leminaw.leminaw-to-show { \
             background : #4FB122; \
         } \
         \
-        a.leminaw.leminaw-to-show:hover { \
-            background : #5FBB35; \
-        } \
     ";
 
     document.head.appendChild(style);
 }
 
 function updateState(e) {
-    var post = this.parentNode.parentNode.previousSibling,
+    var post = this.parentNode.parentNode.parentNode.parentNode,
         pseudo = getPseudoFromPost(post),
         posts = getPostsFromPseudo(pseudo);
 
@@ -186,9 +173,9 @@ function updateState(e) {
 function updateButtonState(posts, state) {
     for(var i = 0, len = posts.length; i < len; i++) {
         var post = posts[i],
-            button = post.nextSibling.querySelector('a.kocal');
+            button = post.querySelector('a.leminaw');
 
-        button.className = 'leminaw leminaw-' + state.replace(' ', '-');
+        button.className = 'item control leminaw leminaw-' + state.replace(' ', '-');
 
         button.textContent = 'Cacher la signature';
 
